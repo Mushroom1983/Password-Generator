@@ -11,19 +11,66 @@ const options = {
   upperCasedCharacters
 }
 
+const getRandomElement = (arr) => {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
 
 
 
 
 // Function to prompt user for password options
-function getPasswordOptions() {
+const getPasswordOptions = () => {
+  const MINIMUM_PASSWORD_LENGTH = 8;
+  const MAXIMUM_PASSWORD_LENGTH = 128;
+
+  const length = document.getElementById('password-length').valueAsNumber;
+
+  if (isNaN(length) || length < MINIMUM_PASSWORD_LENGTH || length > MAXIMUM_PASSWORD_LENGTH) {
+    alert(`Password length must be between ${MINIMUM_PASSWORD_LENGTH} and ${MAXIMUM_PASSWORD_LENGTH} characters.`);
+    return null;
+  }
+
+  const hasSpecialCharacters = document.getElementById('include-special-characters').checked;
+  const hasNumericCharacters = document.getElementById('include-numeric-characters').checked;
+  const hasLowerCasedCharacters = document.getElementById('include-lowercase-characters').checked;
+  const hasUpperCasedCharacters = document.getElementById('include-uppercase-characters').checked;
+
+  if (!hasSpecialCharacters && !hasNumericCharacters && !hasLowerCasedCharacters && !hasUpperCasedCharacters) {
+    alert('Please select at least one character type.');
+    return null;
+  
+  }
+
+  return {
+    length,
+    hasSpecialCharacters,
+    hasNumericCharacters,
+    hasLowerCasedCharacters,
+    hasUpperCasedCharacters
+  };
 
 }
 
-// Function for getting a random element from an array
-function getRandom(arr) {
+const getSelectedoptions = (PasswordOptions) => {
+  const selectedOptions = [];
+  if (PasswordOptions.hasSpecialCharacters) {
+    selectedOptions.push(getRandomElement(options.specialCharacters));
+  }
+  if (PasswordOptions.hasNumericCharacters) {
+    selectedOptions.push(getRandomElement(options.numericCharacters));
+  }
+  if (PasswordOptions.hasLowerCasedCharacters) {
+    selectedOptions.push(getRandomElement(options.lowerCasedCharacters));
+  }
+  if (PasswordOptions.hasUpperCasedCharacters) {
+    selectedOptions.push(getRandomElement(options.upperCasedCharacters));
+  }
+  return selectedOptions;
+} 
 
-}
+
+
 
 // Function to generate password with user input
 function generatePassword() {
