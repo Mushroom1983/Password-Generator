@@ -1,4 +1,3 @@
-// Assignment code here, moved to make easier to read as it is all in one place
 const specialCharacters = ['@', '%', '+', '\\', '/', "'", '!', '#', '$', '^', '?', ':', ',', '(', ')', '{', '}', '[', ']', '~', '-', '_', '.'];
 const numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const lowerCasedCharacters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -15,9 +14,6 @@ const getRandomElement = (arr) => {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
-
-
-
 
 // Function to prompt user for password options
 const getPasswordOptions = () => {
@@ -39,7 +35,6 @@ const getPasswordOptions = () => {
   if (!hasSpecialCharacters && !hasNumericCharacters && !hasLowerCasedCharacters && !hasUpperCasedCharacters) {
     alert('Please select at least one character type.');
     return null;
-  
   }
 
   return {
@@ -49,43 +44,52 @@ const getPasswordOptions = () => {
     hasLowerCasedCharacters,
     hasUpperCasedCharacters
   };
-
 }
 
-const getSelectedoptions = (PasswordOptions) => {
+const getSelectedOptions = (passwordOptions) => {
   const selectedOptions = [];
-  if (PasswordOptions.hasSpecialCharacters) {
+  if (passwordOptions.hasSpecialCharacters) {
     selectedOptions.push(getRandomElement(options.specialCharacters));
   }
-  if (PasswordOptions.hasNumericCharacters) {
+  if (passwordOptions.hasNumericCharacters) {
     selectedOptions.push(getRandomElement(options.numericCharacters));
   }
-  if (PasswordOptions.hasLowerCasedCharacters) {
+  if (passwordOptions.hasLowerCasedCharacters) {
     selectedOptions.push(getRandomElement(options.lowerCasedCharacters));
   }
-  if (PasswordOptions.hasUpperCasedCharacters) {
+  if (passwordOptions.hasUpperCasedCharacters) {
     selectedOptions.push(getRandomElement(options.upperCasedCharacters));
   }
   return selectedOptions;
-} 
-
-
-
+}
 
 // Function to generate password with user input
-function generatePassword() {
-
+const generatePassword = (length, selectedOptions) => {
+  let generatedPassword = '';
+  for (let index = 0; index < length; index++) {
+    const selectedOption = getRandomElement(selectedOptions);
+    generatedPassword += selectedOption;
+  }
+  return generatedPassword;
 }
 
 // Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
+const generateBtn = document.querySelector('#generate');
 
 // Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector('#password');
+const writePassword = () => {
+  const passwordOptions = getPasswordOptions();
+  if (!passwordOptions) return;
+  const selectedOptions = getSelectedOptions(passwordOptions);
+  console.log("Password length:", passwordOptions.length);
+  const password = generatePassword(passwordOptions.length, selectedOptions);
+  console.log("Password:", password);
+  const passwordText = document.querySelector('#password');
 
   passwordText.value = password;
+  passwordText.focus();
+  passwordText.select();
+  alert('Password generated successfully!');
 }
 
 // Add event listener to generate button
